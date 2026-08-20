@@ -1,0 +1,32 @@
+{
+  "name": "kisan-bazar",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jeetpal000/kisan-bazar.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon realtime-server/server.js",
+    "start": "node realtime-server/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://github.com/jeetpal000/kisan-bazar/issues"
+  },
+  "homepage": "https://github.com/jeetpal000/kisan-bazar#readme",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "socket.io": "^4.8.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}
