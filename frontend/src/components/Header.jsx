@@ -11,6 +11,7 @@ import { useAuthStore } from "@/lib/authStore";
 import { useCartStore } from "@/lib/cartStore";
 import { useWishlistStore } from "@/lib/wishlistStore";
 import { RiMenuFold2Line, RiMenuUnfold2Line } from "react-icons/ri";
+import { MessageCircle } from "lucide-react";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -146,6 +147,14 @@ const Header = () => {
               My Orders
             </Link>
           </li>
+          <li className="text-white font-medium text-xl">
+            <Link
+              href="/chat"
+              className={`${linkClass("/chat")} flex items-center gap-1`}
+            >
+              <MessageCircle className="size-5" /> Chat
+            </Link>
+          </li>
         </ul>
         {/* search */}
         <div className="hidden md:block">
@@ -255,6 +264,17 @@ const Header = () => {
                       className={`${linkClass("/orders")} w-full`}
                     >
                       My Orders
+                    </Link>
+                  </li>
+                  <li
+                    onClick={() => setIsMenuOpen(!isMenuOpen)}
+                    className="text-white font-medium text-xl"
+                  >
+                    <Link
+                      href="/chat"
+                      className={`${linkClass("/chat")} w-full`}
+                    >
+                      Chat
                     </Link>
                   </li>
                 </ul>
