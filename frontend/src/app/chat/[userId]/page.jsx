@@ -58,6 +58,55 @@ export default function ChatPage() {
     callStatusRef.current = callStatus;
   }, [callStatus]);
 
+  const vapidKeyToBytes = (key) => {
+    const base64 = key.replace(/-/g, "+").replace(/_/g, "/");
+    const padded = base64.padEnd(
+      base64.length + ((4 - (base64.length % 4)) % 4),
+      "=",
+    );
+    return Uint8Array.from(atob(padded), (character) =>
+      character.charCodeAt(0),
+    );
+  };
+
+  const registerPushSubscription = async () => {
+    if (
+      typeof window === "undefined" ||
+      !("serviceWorker" in navigator) ||
+      !("PushManager" in window) ||
+      !process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY
+    )
+      return;
+    const registration = await navigator.serviceWorker.register("/sw.js");
+    const subscription = await registration.pushManager.subscribe({
+      userVisibleOnly: true,
+      applicationServerKey: vapidKeyToBytes(
+        process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY,
+      ),
+    });
+    await fetch("/api/notifications/subscribe", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(subscription),
+    });
+  };
+
+  useEffect(() => {
+    if (
+      currentUser &&
+      typeof Notification !== "undefined" &&
+      Notification.permission === "granted"
+    ) {
+      registerPushSubscription().catch(() => {});
+    }
+  }, [currentUser]);
+
+  useEffect(() => {
+    const resumeAudio = () => remoteAudio.current?.play().catch(() => {});
+    document.addEventListener("visibilitychange", resumeAudio);
+    return () => document.removeEventListener("visibilitychange", resumeAudio);
+  }, []);
+
   useEffect(() => {
     const load = async () => {
       const [meResponse, chatResponse] = await Promise.all([
@@ -89,7 +138,9 @@ export default function ChatPage() {
         setMessages((items) => [...items, message]);
         if (
           typeof Notification !== "undefined" &&
-          Notification.permission === "granted"
+          Notification.permission === "granted" &&
+          document.visibilityState !== "visible" &&
+          !process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY
         ) {
           new Notification(otherUser?.farmername || "New message", {
             body: message.text,
@@ -234,7 +285,18 @@ export default function ChatPage() {
       audio: true,
     });
     const connection = new RTCPeerConnection({
-      iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
+      iceServers: [
+        { urls: "stun:stun.l.google.com:19302" },
+        ...(process.env.NEXT_PUBLIC_TURN_URL
+          ? [
+              {
+                urls: process.env.NEXT_PUBLIC_TURN_URL,
+                username: process.env.NEXT_PUBLIC_TURN_USERNAME,
+                credential: process.env.NEXT_PUBLIC_TURN_CREDENTIAL,
+              },
+            ]
+          : []),
+      ],
     });
     localStream.current
       .getTracks()
@@ -254,11 +316,7 @@ export default function ChatPage() {
       }
     };
     connection.onconnectionstatechange = () => {
-      if (
-        ["failed", "disconnected", "closed"].includes(
-          connection.connectionState,
-        )
-      )
+      if (["failed", "closed"].includes(connection.connectionState))
         closeCall();
     };
     peerConnection.current = connection;
@@ -305,8 +363,9 @@ export default function ChatPage() {
   };
 
   const enableNotifications = async () => {
-    if (typeof Notification !== "undefined")
-      await Notification.requestPermission();
+    if (typeof Notification === "undefined") return;
+    const permission = await Notification.requestPermission();
+    if (permission === "granted") await registerPushSubscription();
   };
 
   useEffect(() => {
@@ -587,7 +646,7 @@ export default function ChatPage() {
               {callError}
             </p>
           )}
-          <audio ref={remoteAudio} autoPlay className="hidden" />
+          <audio ref={remoteAudio} autoPlay playsInline className="hidden" />
           <div className="flex-1 space-y-3 overflow-y-auto p-5">
             {messages.map((message) => (
               <div

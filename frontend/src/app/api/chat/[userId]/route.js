@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
 import { ChatMessageTable, UserTable } from "@/model/auth.Schema";
 import { CreateServer } from "@/utils/db";
+import { sendChatPush } from "@/lib/push";
 
 async function getCurrentUserId() {
   const token = (await cookies()).get("accesstoken")?.value;
@@ -56,6 +57,13 @@ export async function POST(req, { params }) {
     senderId: currentUserId,
     receiverId: userId,
     text: text.trim(),
+  });
+  const sender = await UserTable.findById(currentUserId).select("farmername").lean();
+  await sendChatPush({
+    userId: userId,
+    senderName: sender?.farmername,
+    text: message.text,
+    chatUserId: currentUserId,
   });
 
   return NextResponse.json({

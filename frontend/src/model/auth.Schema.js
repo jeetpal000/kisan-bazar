@@ -129,6 +129,24 @@ const SessionSchema = new mongoose.Schema({
 
 export const SessionTable = mongoose.models.SessionTable || mongoose.model("SessionTable", SessionSchema);
 
+const PushSubscriptionSchema = new mongoose.Schema({
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "UserTable",
+    required: true,
+    index: true,
+  },
+  endpoint: { type: String, required: true, unique: true },
+  keys: {
+    p256dh: { type: String, required: true },
+    auth: { type: String, required: true },
+  },
+}, { timestamps: true });
+
+export const PushSubscriptionTable =
+  mongoose.models.PushSubscriptionTable ||
+  mongoose.model("PushSubscriptionTable", PushSubscriptionSchema);
+
 const ChatMessageSchema = new mongoose.Schema(
   {
     senderId: {
