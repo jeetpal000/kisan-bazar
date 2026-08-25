@@ -5,7 +5,11 @@ import Link from "next/link";
 import {
   ArrowLeft,
   ChevronLeft,
+  Bell,
   MessageCircle,
+  Mic,
+  Phone,
+  PhoneOff,
   Search,
   Send,
 } from "lucide-react";
@@ -30,6 +34,29 @@ export default function ChatPage() {
   const bottomRef = useRef(null);
   const typingTimeout = useRef(null);
   const acknowledgedMessageIds = useRef(new Set());
+  const peerConnection = useRef(null);
+  const localStream = useRef(null);
+  const remoteAudio = useRef(null);
+  const pendingIceCandidates = useRef([]);
+  const callId = useRef(null);
+  const callStatusRef = useRef("idle");
+  const [callStatus, setCallStatus] = useState("idle");
+  const [callError, setCallError] = useState("");
+
+  const closeCall = () => {
+    peerConnection.current?.close();
+    peerConnection.current = null;
+    localStream.current?.getTracks().forEach((track) => track.stop());
+    localStream.current = null;
+    pendingIceCandidates.current = [];
+    callId.current = null;
+    callStatusRef.current = "idle";
+    setCallStatus("idle");
+  };
+
+  useEffect(() => {
+    callStatusRef.current = callStatus;
+  }, [callStatus]);
 
   useEffect(() => {
     const load = async () => {
@@ -58,8 +85,18 @@ export default function ChatPage() {
       if (senderId === userId) setTyping(isTyping);
     };
     const handleMessage = (message) => {
-      if (message.senderId === userId)
+      if (message.senderId === userId) {
         setMessages((items) => [...items, message]);
+        if (
+          typeof Notification !== "undefined" &&
+          Notification.permission === "granted"
+        ) {
+          new Notification(otherUser?.farmername || "New message", {
+            body: message.text,
+            tag: `chat-${userId}`,
+          });
+        }
+      }
     };
     const handleDelivered = ({ messageId }) =>
       setMessages((items) =>
@@ -77,11 +114,100 @@ export default function ChatPage() {
             : message,
         ),
       );
+    const handleIncomingCall = async ({
+      callId: incomingCallId,
+      callerId,
+      callerName,
+    }) => {
+      if (callStatusRef.current !== "idle") {
+        socket.emit("call:reject", { callId: incomingCallId, callerId });
+        return;
+      }
+      callId.current = incomingCallId;
+      setCallStatus("ringing");
+      setCallError("");
+      if ("Notification" in window) {
+        if (Notification.permission === "default")
+          await Notification.requestPermission();
+        if (Notification.permission === "granted") {
+          new Notification(`${callerName} is calling`, {
+            body: "Open Kisan Bazar to answer",
+          });
+        }
+      }
+    };
+    const handleCallAccepted = async ({ callId: acceptedCallId }) => {
+      if (acceptedCallId !== callId.current) return;
+      setCallStatus("connected");
+      const offer = await peerConnection.current.createOffer();
+      await peerConnection.current.setLocalDescription(offer);
+      socket.emit("call:signal", {
+        callId: acceptedCallId,
+        recipientId: userId,
+        type: "offer",
+        signal: offer,
+      });
+    };
+    const handleCallSignal = async ({ callId: signalCallId, type, signal }) => {
+      if (signalCallId !== callId.current || !peerConnection.current) return;
+      if (type === "offer") {
+        await peerConnection.current.setRemoteDescription(signal);
+        for (const candidate of pendingIceCandidates.current) {
+          await peerConnection.current.addIceCandidate(candidate);
+        }
+        pendingIceCandidates.current = [];
+        const answer = await peerConnection.current.createAnswer();
+        await peerConnection.current.setLocalDescription(answer);
+        socket.emit("call:signal", {
+          callId: signalCallId,
+          recipientId: userId,
+          type: "answer",
+          signal: answer,
+        });
+      } else if (type === "answer") {
+        await peerConnection.current.setRemoteDescription(signal);
+        for (const candidate of pendingIceCandidates.current) {
+          await peerConnection.current.addIceCandidate(candidate);
+        }
+        pendingIceCandidates.current = [];
+      } else if (type === "ice-candidate") {
+        if (peerConnection.current.remoteDescription) {
+          await peerConnection.current.addIceCandidate(signal);
+        } else {
+          pendingIceCandidates.current.push(signal);
+        }
+      }
+    };
+    const handleCallEnded = ({ callId: endedCallId }) => {
+      if (endedCallId === callId.current) closeCall();
+    };
+    const handleCallRejected = ({ callId: rejectedCallId }) => {
+      if (rejectedCallId !== callId.current) return;
+      setCallError("Call was declined");
+      closeCall();
+    };
+    const handleCallBusy = ({ callId: busyCallId }) => {
+      if (busyCallId !== callId.current) return;
+      setCallError("User is busy on another call");
+      closeCall();
+    };
+    const handleCallUnavailable = ({ callId: unavailableCallId }) => {
+      if (unavailableCallId !== callId.current) return;
+      setCallError("User is unavailable");
+      closeCall();
+    };
     socket.on("presence:update", handlePresence);
     socket.on("chat:typing", handleTyping);
     socket.on("chat:message", handleMessage);
     socket.on("chat:delivered", handleDelivered);
     socket.on("chat:read", handleRead);
+    socket.on("call:incoming", handleIncomingCall);
+    socket.on("call:accepted", handleCallAccepted);
+    socket.on("call:signal", handleCallSignal);
+    socket.on("call:ended", handleCallEnded);
+    socket.on("call:rejected", handleCallRejected);
+    socket.on("call:busy", handleCallBusy);
+    socket.on("call:unavailable", handleCallUnavailable);
     socket.connect();
     socket.emit("user:online", currentUser.id);
     socket.emit("presence:get");
@@ -91,9 +217,97 @@ export default function ChatPage() {
       socket.off("chat:message", handleMessage);
       socket.off("chat:delivered", handleDelivered);
       socket.off("chat:read", handleRead);
+      socket.off("call:incoming", handleIncomingCall);
+      socket.off("call:accepted", handleCallAccepted);
+      socket.off("call:signal", handleCallSignal);
+      socket.off("call:ended", handleCallEnded);
+      socket.off("call:rejected", handleCallRejected);
+      socket.off("call:busy", handleCallBusy);
+      socket.off("call:unavailable", handleCallUnavailable);
+      closeCall();
       socket.disconnect();
     };
-  }, [currentUser, userId]);
+  }, [currentUser, otherUser?.farmername, userId]);
+
+  const createPeerConnection = async () => {
+    localStream.current = await navigator.mediaDevices.getUserMedia({
+      audio: true,
+    });
+    const connection = new RTCPeerConnection({
+      iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
+    });
+    localStream.current
+      .getTracks()
+      .forEach((track) => connection.addTrack(track, localStream.current));
+    connection.ontrack = ({ streams }) => {
+      if (remoteAudio.current && streams[0])
+        remoteAudio.current.srcObject = streams[0];
+    };
+    connection.onicecandidate = ({ candidate }) => {
+      if (candidate && callId.current) {
+        socket.emit("call:signal", {
+          callId: callId.current,
+          recipientId: userId,
+          type: "ice-candidate",
+          signal: candidate,
+        });
+      }
+    };
+    connection.onconnectionstatechange = () => {
+      if (
+        ["failed", "disconnected", "closed"].includes(
+          connection.connectionState,
+        )
+      )
+        closeCall();
+    };
+    peerConnection.current = connection;
+  };
+
+  const startCall = async () => {
+    if (callStatus !== "idle") return;
+    try {
+      setCallError("");
+      await createPeerConnection();
+      callId.current = crypto.randomUUID();
+      setCallStatus("calling");
+      socket.emit("call:start", {
+        callId: callId.current,
+        recipientId: userId,
+        callerName: currentUser.farmername,
+      });
+    } catch {
+      setCallError("Microphone permission is required");
+      closeCall();
+    }
+  };
+
+  const acceptCall = async () => {
+    try {
+      await createPeerConnection();
+      setCallStatus("connected");
+      socket.emit("call:accept", { callId: callId.current, callerId: userId });
+    } catch {
+      socket.emit("call:reject", { callId: callId.current, callerId: userId });
+      setCallError("Microphone permission is required");
+      closeCall();
+    }
+  };
+
+  const rejectCall = () => {
+    socket.emit("call:reject", { callId: callId.current, callerId: userId });
+    closeCall();
+  };
+
+  const endCall = () => {
+    socket.emit("call:end", { callId: callId.current });
+    closeCall();
+  };
+
+  const enableNotifications = async () => {
+    if (typeof Notification !== "undefined")
+      await Notification.requestPermission();
+  };
 
   useEffect(() => {
     if (!currentUser || !messages.length) return;
@@ -306,7 +520,74 @@ export default function ChatPage() {
                 {online ? "Online" : formatLastSeen(lastSeen)}
               </p>
             </div>
+            <button
+              type="button"
+              onClick={startCall}
+              disabled={callStatus !== "idle" || !online}
+              aria-label={`Call ${otherUser.farmername}`}
+              title={!online ? "User is offline" : "Start audio call"}
+              className="ml-auto flex size-10 items-center justify-center rounded-full bg-green-700 text-white disabled:cursor-not-allowed disabled:opacity-40"
+            >
+              <Phone className="size-4" />
+            </button>
+            {typeof Notification !== "undefined" &&
+              Notification.permission !== "granted" && (
+                <button
+                  type="button"
+                  onClick={enableNotifications}
+                  aria-label="Enable message notifications"
+                  title="Enable message notifications"
+                  className="flex size-10 items-center justify-center rounded-full border border-slate-200 text-slate-600 hover:bg-slate-50"
+                >
+                  <Bell className="size-4" />
+                </button>
+              )}
           </header>
+          {callStatus !== "idle" && (
+            <div className="flex items-center gap-3 border-b bg-green-50 px-5 py-3 text-sm text-green-900">
+              <Mic className="size-4" />
+              <span className="flex-1">
+                {callStatus === "calling" &&
+                  `Calling ${otherUser.farmername}...`}
+                {callStatus === "ringing" &&
+                  `${otherUser.farmername} is calling...`}
+                {callStatus === "connected" && "Audio call connected"}
+              </span>
+              {callStatus === "ringing" ? (
+                <>
+                  <button
+                    type="button"
+                    onClick={acceptCall}
+                    className="rounded-md bg-green-700 px-3 py-1.5 text-white"
+                  >
+                    Accept
+                  </button>
+                  <button
+                    type="button"
+                    onClick={rejectCall}
+                    className="rounded-md border border-red-200 px-3 py-1.5 text-red-700"
+                  >
+                    Reject
+                  </button>
+                </>
+              ) : (
+                <button
+                  type="button"
+                  onClick={endCall}
+                  aria-label="End audio call"
+                  className="flex size-8 items-center justify-center rounded-full bg-red-600 text-white"
+                >
+                  <PhoneOff className="size-4" />
+                </button>
+              )}
+            </div>
+          )}
+          {callError && (
+            <p className="border-b bg-red-50 px-5 py-2 text-xs text-red-700">
+              {callError}
+            </p>
+          )}
+          <audio ref={remoteAudio} autoPlay className="hidden" />
           <div className="flex-1 space-y-3 overflow-y-auto p-5">
             {messages.map((message) => (
               <div
