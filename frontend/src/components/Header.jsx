@@ -1,8 +1,8 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { Input } from "./ui/input";
-import { FaRegHeart, FaHeart, FaSearch } from "react-icons/fa";
-import { IoCart, IoCartOutline } from "react-icons/io5";
+import { FaHeart, FaSearch } from "react-icons/fa";
+import { IoCart } from "react-icons/io5";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
@@ -11,7 +11,6 @@ import { useAuthStore } from "@/lib/authStore";
 import { useCartStore } from "@/lib/cartStore";
 import { useWishlistStore } from "@/lib/wishlistStore";
 import { RiMenuFold2Line, RiMenuUnfold2Line } from "react-icons/ri";
-import { MessageCircle } from "lucide-react";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -148,11 +147,8 @@ const Header = () => {
             </Link>
           </li>
           <li className="text-white font-medium text-xl">
-            <Link
-              href="/chat"
-              className={`${linkClass("/chat")} flex items-center gap-1`}
-            >
-              <MessageCircle className="size-5" /> Chat
+            <Link href="/chat" className={`${linkClass("/chat")}`}>
+              Chat
             </Link>
           </li>
         </ul>
