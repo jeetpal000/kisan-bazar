@@ -251,7 +251,7 @@ export default function ChatPage() {
                     )}
                   </div>
                   <div className="min-w-0 flex-1">
-                    <p className="truncate font-medium text-slate-800">
+                    <p className="truncate font-medium text-gray-500">
                       {user.farmername}
                     </p>
                     <p className="truncate text-xs text-slate-500">
@@ -314,7 +314,7 @@ export default function ChatPage() {
                 className={`flex ${message.senderId === currentUser?.id ? "justify-end" : "justify-start"}`}
               >
                 <div
-                  className={`max-w-[80%] rounded-xl px-3 py-2 text-sm ${message.senderId === currentUser?.id ? "bg-green-700 text-white" : "bg-white text-slate-800 shadow-sm"}`}
+                  className={`max-w-[80%] rounded-xl px-3 py-2 text-sm ${message.senderId === currentUser?.id ? "bg-[#d2d2d2] text-[#2b2b2b]" : "bg-green-700 text-[white] shadow-sm"}`}
                 >
                   <p>{message.text}</p>
                   {message.senderId === currentUser?.id && (

@@ -75,7 +75,7 @@ const Page = () => {
       const result = await res.json();
       if (!res.ok) {
         toast.error(result.message || "Unable to submit seller application.", {
-          position: "top-right",
+          position: "bottom-right",
           autoClose: 3000,
           transition: Bounce,
         });
@@ -83,7 +83,7 @@ const Page = () => {
       }
 
       toast.success(result.message || "Seller application sent successfully.", {
-        position: "top-right",
+        position: "bottom-right",
         autoClose: 3000,
         transition: Bounce,
       });
@@ -93,7 +93,7 @@ const Page = () => {
         result.message ||
           "Unable to submit seller application. Please try again.",
         {
-          position: "top-right",
+          position: "bottom-right",
           autoClose: 3000,
           transition: Bounce,
         },

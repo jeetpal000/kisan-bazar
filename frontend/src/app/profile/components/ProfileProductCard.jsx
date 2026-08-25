@@ -210,7 +210,7 @@ const ProfileProductCard = ({ product, onProductUploadedSuccess }) => {
 
       if (!res.ok) {
         toast.error(data.message || "Deleted Failed", {
-          position: "top-right",
+          position: "bottom-right",
           autoClose: 3000,
         });
         return;
@@ -219,13 +219,13 @@ const ProfileProductCard = ({ product, onProductUploadedSuccess }) => {
       onProductUploadedSuccess?.();
 
       toast.success(data.message, {
-        position: "top-right",
+        position: "bottom-right",
         autoClose: 3000,
         transition: Bounce,
       });
     } catch (error) {
       toast.error("Deleted failed. Please try again", {
-        position: "top-right",
+        position: "bottom-right",
         autoClose: 3000,
       });
     }

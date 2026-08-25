@@ -59,14 +59,14 @@ const Page = () => {
       const result = await res.json();
       if (result.status === "SUCCESS") {
         toast.success(result.message, {
-          position: "top-right",
+          position: "bottom-right",
           autoClose: 3000,
           transition: Bounce,
         });
         router.push("/");
       } else {
         toast.error(result.message, {
-          position: "top-right",
+          position: "bottom-right",
           autoClose: 3000,
           transition: Bounce,
         });
@@ -74,7 +74,7 @@ const Page = () => {
     } catch (error) {
       console.error(error);
       toast.error("Registration failed. Please try again.", {
-        position: "top-right",
+        position: "bottom-right",
         autoClose: 3000,
         transition: Bounce,
       });
@@ -94,7 +94,7 @@ const Page = () => {
       const result = await res.json();
       if (result.status === "SUCCESS") {
         toast.success(result.message, {
-          position: "top-right",
+          position: "bottom-right",
           autoClose: 3000,
           transition: Bounce,
         });
@@ -115,7 +115,7 @@ const Page = () => {
         router.replace("/");
       } else {
         toast.error(result.message, {
-          position: "top-right",
+          position: "bottom-right",
           autoClose: 3000,
           transition: Bounce,
         });
@@ -123,7 +123,7 @@ const Page = () => {
     } catch (error) {
       console.error(error);
       toast.error("login failed. Please try again.", {
-        position: "top-right",
+        position: "bottom-right",
         autoClose: 3000,
         transition: Bounce,
       });
@@ -137,7 +137,7 @@ const Page = () => {
 
     if (!forgotEmail.trim()) {
       toast.error("Please enter your email address.", {
-        position: "top-right",
+        position: "bottom-right",
         autoClose: 3000,
         transition: Bounce,
       });
@@ -158,7 +158,7 @@ const Page = () => {
           result.message ||
             "If that account exists, a reset link has been sent.",
           {
-            position: "top-right",
+            position: "bottom-right",
             autoClose: 3000,
             transition: Bounce,
           },
@@ -167,7 +167,7 @@ const Page = () => {
         setForgotPasswordPopUp(false);
       } else {
         toast.error(result.message, {
-          position: "top-right",
+          position: "bottom-right",
           autoClose: 3000,
           transition: Bounce,
         });
@@ -175,7 +175,7 @@ const Page = () => {
     } catch (error) {
       console.error(error);
       toast.error("Unable to send reset link. Please try again.", {
-        position: "top-right",
+        position: "bottom-right",
         autoClose: 3000,
         transition: Bounce,
       });

@@ -74,7 +74,7 @@ const ProfileLeftPage = ({ userData, onProfileUpdated }) => {
       const data = await res.json();
       if (!res.ok) {
         toast.error(data.message || "Logout failed", {
-          position: "top-right",
+          position: "bottom-right",
           autoClose: 3000,
         });
         return;
@@ -93,14 +93,14 @@ const ProfileLeftPage = ({ userData, onProfileUpdated }) => {
         queryKey: ["wishlist"],
       });
       toast.success(data.message, {
-        position: "top-right",
+        position: "bottom-right",
         autoClose: 3000,
         transition: Bounce,
       });
       router.replace("/login");
     } catch (error) {
       toast.error("Logout failed. Please try again.", {
-        position: "top-right",
+        position: "bottom-right",
         autoClose: 3000,
       });
     }
@@ -128,19 +128,19 @@ const ProfileLeftPage = ({ userData, onProfileUpdated }) => {
         setImage(null);
         if (onProfileUpdated) onProfileUpdated(data.user);
         toast.success("Profile image updated.", {
-          position: "top-right",
+          position: "bottom-right",
           autoClose: 2500,
           transition: Bounce,
         });
       } else {
         toast.error(data.message || "Upload failed.", {
-          position: "top-right",
+          position: "bottom-right",
           autoClose: 3000,
         });
       }
     } catch (error) {
       toast.error("Upload failed. Please try again.", {
-        position: "top-right",
+        position: "bottom-right",
         autoClose: 3000,
       });
     } finally {

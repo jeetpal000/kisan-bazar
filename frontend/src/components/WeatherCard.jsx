@@ -7,6 +7,7 @@ import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { Search, RefreshCw } from "lucide-react";
 import WeatherSkeleton from "./ui/WeatherCardSkelton";
+import { toast } from "react-toastify";
 
 const weekDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
@@ -71,7 +72,10 @@ const WeatherCard = () => {
       const data = await res.json();
 
       if (!res.ok || !data.success) {
-        console.error(data.message || "Location not found");
+        toast.error(data.message || "Location not found", {
+          position: "bottom-right",
+          autoClose: 2500,
+        });
         setSearching(false);
         return;
       }

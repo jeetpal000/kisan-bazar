@@ -95,14 +95,14 @@ export default function ResetPasswordClient() {
 
       if (result.success) {
         toast.success(result.message || "Password updated successfully.", {
-          position: "top-right",
+          position: "bottom-right",
           autoClose: 3000,
           transition: Bounce,
         });
         router.push("/login");
       } else {
         toast.error(result.message || "Unable to update password.", {
-          position: "top-right",
+          position: "bottom-right",
           autoClose: 3000,
           transition: Bounce,
         });
@@ -110,7 +110,7 @@ export default function ResetPasswordClient() {
     } catch (error) {
       console.error(error);
       toast.error("Unable to update password. Please try again.", {
-        position: "top-right",
+        position: "bottom-right",
         autoClose: 3000,
         transition: Bounce,
       });
