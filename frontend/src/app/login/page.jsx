@@ -185,10 +185,14 @@ const Page = () => {
   };
 
   return (
-    <main className="mx-auto w-full">
+    <main className="relative mx-auto w-full">
       <Header />
       <div className="max-w-360 mx-auto px-10 my-30 ">
-        {loading && <div className="">loading</div>}
+        {loading && (
+          <div className="absolute inset-0 z-50 flex items-center justify-center rounded-md bg-black/40">
+            <div className="w-8 h-8 rounded-full border-[3px] border-white/30 border-t-green-500 animate-spin" />
+          </div>
+        )}
         {forgotPasswordPopUp ? (
           <Card className="w-full max-w-sm mx-auto shadow-lg">
             <CardHeader>

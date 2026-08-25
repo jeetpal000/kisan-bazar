@@ -4,6 +4,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ConditionalHeader from "@/components/ConditionalHeader";
 import QueryProvider from "@/components/QueryProvider";
+import ThemeToggle from "@/components/ThemeToggle";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,11 +28,19 @@ export default function RootLayout({ children }) {
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
       data-scroll-behavior="smooth"
     >
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(() => { const saved = localStorage.getItem("theme"); const dark = saved ? saved === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches; document.documentElement.classList.toggle("dark", dark); })()`,
+          }}
+        />
+      </head>
       <body className="font-sans" suppressHydrationWarning>
         <QueryProvider>
           <ConditionalHeader />
           {children}
           <ToastContainer />
+          <ThemeToggle />
         </QueryProvider>
       </body>
     </html>

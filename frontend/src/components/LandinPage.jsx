@@ -34,21 +34,23 @@ const Landingage = () => {
         >
           <div className="px-4 lg:px-10 relative z-20 max-w-360">
             <div className="">
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-wider">
+              <h1 className="text-3xl text-[#060810f1] md:text-5xl lg:text-6xl font-bold tracking-wider">
                 From Our <span className="text-[#07de07]">Fields {""} </span>{" "}
                 <br /> to <span className="text-[#07de07]">Your Home</span>
               </h1>
             </div>
-            <ul className="flex items-center gap-5">
-              <li className="font-medium text-xl">Fresh</li>
-              <li className="font-medium text-xl relative before:content[''] before:absolute before:w-2.5 before:h-2.5 before:-left-4 before:top-1/2 before:-translate-y-1/2 before:bg-[green] before:rounded-full">
+            <ul className="flex items-center gap-5 text-[#060810f1]">
+              <li className="font-medium text-sm text-shadow-gray-300">
+                Fresh
+              </li>
+              <li className="font-medium text-sm relative before:content[''] before:absolute before:w-2.5 before:h-2.5 before:-left-4 before:top-1/2 before:-translate-y-1/2 before:bg-[#015f01] before:shadow-2xs before:rounded-full">
                 Organic
               </li>
-              <li className="font-medium text-xl relative before:content[''] before:absolute before:w-2.5 before:h-2.5 before:-left-4 before:top-1/2 before:-translate-y-1/2 before:bg-[green] before:rounded-full">
+              <li className="font-medium text-sm relative before:content[''] before:absolute before:w-2.5 before:h-2.5 before:-left-4 before:top-1/2 before:-translate-y-1/2 before:bg-[#015f01] before:rounded-full">
                 Direct from Farmers
               </li>
             </ul>
-            <p className="mt-8 text-md font-medium">
+            <p className="mt-8 text-md font-medium text-[#060810f1]">
               Support local farmers and get the highest quality <br /> product
               delivered fresh to your doorstep.
             </p>
@@ -60,8 +62,8 @@ const Landingage = () => {
                 Shop Now{" "}
                 <FaArrowRight className=" transform transition-transform duration-300 group-hover:translate-x-2" />
               </Link>
-              <button className="flex gap-2 items-center border border-gray-200 text-[#029102] font-bold cursor-pointer hover:shadow-2xl hover:shadow-black px-3 py-2 rounded-2xl active:scale-95 transition-all duration-300">
-                <div className="bg-white w-6 h-6 rounded-full flex items-center justyify-center">
+              <button className="flex gap-2 items-center border border-gray-600 text-[#029102] font-bold cursor-pointer hover:shadow-2xl hover:shadow-black px-3 py-2 rounded-2xl active:scale-95 transition-all duration-300">
+                <div className="bg-[white] w-6 h-6 rounded-full flex items-center justyify-center">
                   <FaPlay className="ml-1" />
                 </div>
                 Watch Video

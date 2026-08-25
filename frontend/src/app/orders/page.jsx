@@ -129,7 +129,7 @@ export default function OrdersPage() {
       {loading && <p className="text-gray-600">Loading your orders...</p>}
       {!loading && error && <p className="text-red-600">{error}</p>}
       {!loading && !error && orders.length === 0 && (
-        <p className="rounded-xl bg-green-50 p-6 text-gray-700">
+        <p className="rounded-xl bg-[#6361612b]  p-6 text-muted-foreground">
           You have not placed any orders yet.
         </p>
       )}

@@ -18,6 +18,8 @@ import { changePasswordSchema } from "@/validation/auth.validation";
 import { useAuthStore } from "@/lib/authStore";
 import { useQueryClient } from "@tanstack/react-query";
 import { FiEye, FiEyeOff } from "react-icons/fi";
+import Cropper from "react-cropper";
+import "cropperjs/dist/cropper.css";
 
 const ProfileLeftPage = ({ userData, onProfileUpdated }) => {
   const fileRef = useRef(null);
@@ -25,6 +27,8 @@ const ProfileLeftPage = ({ userData, onProfileUpdated }) => {
   const queryClient = useQueryClient();
   const [selectedPreview, setSelectedPreview] = useState(null);
   const [image, setImage] = useState(null);
+  const [cropSource, setCropSource] = useState(null);
+  const cropperRef = useRef(null);
   const [imageLoading, setImageLoading] = useState(false);
   const [changePasswordPopUp, setChangePasswordPopUp] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -36,11 +40,29 @@ const ProfileLeftPage = ({ userData, onProfileUpdated }) => {
   const preview =
     selectedPreview || userData?.profileImage || "/assets/user.png";
 
+  console.log(preview);
+
   const handleFileChange = (e) => {
     const selectedFile = e.target.files?.[0];
     if (!selectedFile) return;
-    setImage(selectedFile);
-    setSelectedPreview(URL.createObjectURL(selectedFile));
+    if (!selectedFile.type.startsWith("image/")) return;
+    setCropSource(URL.createObjectURL(selectedFile));
+    e.target.value = "";
+  };
+
+  const applyCrop = () => {
+    const croppedImage = cropperRef.current?.cropper
+      .getCroppedCanvas({
+        width: 500,
+        height: 500,
+        imageSmoothingQuality: "high",
+      })
+      .toDataURL("image/jpeg", 0.9);
+    if (!croppedImage) return;
+    setImage(croppedImage);
+    setSelectedPreview(croppedImage);
+    URL.revokeObjectURL(cropSource);
+    setCropSource(null);
   };
 
   const handleLogout = async () => {
@@ -84,51 +106,46 @@ const ProfileLeftPage = ({ userData, onProfileUpdated }) => {
     }
   };
 
-  const handleUpload = () => {
-    if (!image) return;
-    setImageLoading(true);
+  const uploadImage = async () => {
+    try {
+      if (!image) return;
+      setImageLoading(true);
 
-    const reader = new FileReader();
-    reader.onloadend = async () => {
-      try {
-        const res = await fetch("/api/upload", {
-          method: "POST",
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            image: reader.result,
-          }),
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          image,
+        }),
+      });
+
+      const data = await res.json();
+      if (data?.success && data.url) {
+        setSelectedPreview(data.url);
+        setImage(null);
+        if (onProfileUpdated) onProfileUpdated(data.user);
+        toast.success("Profile image updated.", {
+          position: "top-right",
+          autoClose: 2500,
+          transition: Bounce,
         });
-
-        const data = await res.json();
-        if (data?.success && data.url) {
-          setSelectedPreview(data.url);
-          setImage(null);
-          if (onProfileUpdated) onProfileUpdated(data.user);
-          toast.success("Profile image updated.", {
-            position: "top-right",
-            autoClose: 2500,
-            transition: Bounce,
-          });
-        } else {
-          toast.error(data.message || "Upload failed.", {
-            position: "top-right",
-            autoClose: 3000,
-          });
-        }
-      } catch (error) {
-        toast.error("Upload failed. Please try again.", {
+      } else {
+        toast.error(data.message || "Upload failed.", {
           position: "top-right",
           autoClose: 3000,
         });
-      } finally {
-        setImageLoading(false);
       }
-    };
-
-    reader.readAsDataURL(image);
+    } catch (error) {
+      toast.error("Upload failed. Please try again.", {
+        position: "top-right",
+        autoClose: 3000,
+      });
+    } finally {
+      setImageLoading(false);
+    }
   };
 
   const {
@@ -205,7 +222,7 @@ const ProfileLeftPage = ({ userData, onProfileUpdated }) => {
               <button className="border px-2 py-1">Remove</button>
             )}
             {image && (
-              <button className="border px-2 py-1" onClick={handleUpload}>
+              <button className="border px-2 py-1" onClick={uploadImage}>
                 Change
               </button>
             )}
@@ -355,6 +372,42 @@ const ProfileLeftPage = ({ userData, onProfileUpdated }) => {
                 {isSubmitting ? "Changing Password" : "Change Password"}
               </button>
             </form>
+          </div>
+        </div>
+      )}
+      {cropSource && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-3">
+          <div className="w-full max-w-lg rounded-lg bg-white p-4">
+            <h2 className="mb-3 text-lg font-bold">Crop profile photo</h2>
+            <Cropper
+              ref={cropperRef}
+              src={cropSource}
+              aspectRatio={1}
+              viewMode={1}
+              guides
+              responsive
+              autoCropArea={1}
+              className="h-[min(70vh,26rem)] w-full"
+            />
+            <div className="mt-4 flex justify-end gap-2">
+              <button
+                type="button"
+                onClick={() => {
+                  URL.revokeObjectURL(cropSource);
+                  setCropSource(null);
+                }}
+                className="rounded border px-4 py-2"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={applyCrop}
+                className="rounded bg-green-600 px-4 py-2 text-white"
+              >
+                Use photo
+              </button>
+            </div>
           </div>
         </div>
       )}

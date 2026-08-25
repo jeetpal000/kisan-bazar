@@ -27,7 +27,6 @@ const categoryName = [
 const Page = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
-  console.log(products);
 
   const [page, setPage] = useState(1);
   const [limit] = useState(12);

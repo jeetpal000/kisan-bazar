@@ -54,7 +54,7 @@ const ProductDetailsPage = ({ product }) => {
     }
   };
 
-  const mediaUrls = product.imageUrls || [];
+  const mediaUrls = product?.imageUrls || [];
 
   const [quantity, setQuantity] = useState(1);
 

@@ -17,10 +17,7 @@ const ProductCard = ({ product }) => {
   const router = useRouter();
   const queryClient = useQueryClient();
   const [currentIndex, setCurrentIndex] = useState(0);
-  const { wishlist, setWishlist, clearWishlist } = useWishlistStore();
-
-  console.log(wishlist);
-  console.log(product);
+  const { wishlist } = useWishlistStore();
 
   const handlePrevious = (e) => {
     e.stopPropagation();
@@ -90,6 +87,7 @@ const ProductCard = ({ product }) => {
         throw error;
       }
 
+      console.log(data);
       return data;
     },
     onSuccess: () => {
@@ -112,17 +110,25 @@ const ProductCard = ({ product }) => {
 
       <div
         onClick={(e) => router.push(`/shopping/${product._id}`)}
-        className="group overflow-hidden rounded-sm bg-white shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl relative"
+        className="group overflow-hidden rounded-sm bg-white shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl relative border border-[#22910032]"
       >
         {/* Image */}
         <div className="relative">
-          <Image
+          {/* <Image
             src={product.imageUrls[currentIndex]}
-            alt={product.imageUrls[currentIndex]}
             width={500}
             height={500}
             className="h-72 w-full object-cover"
-          />
+          /> */}
+          <div className="w-full h-45 md:h-60 flex items-center justify-center overflow-hidden">
+            <Image
+              src={product.imageUrls[currentIndex]}
+              alt={product.imageUrls[currentIndex]}
+              width={500}
+              height={500}
+              className="w-full h-full object-contain"
+            />
+          </div>
 
           {product.imageUrls.length > 1 && (
             <button
@@ -145,24 +151,24 @@ const ProductCard = ({ product }) => {
           )}
 
           {/* Badge */}
-          <div className="absolute md:left-4 left-1 md:top-4 md:bottom-auto bottom-4 flex items-center gap-2 rounded-full bg-green-600 md:px-4 px-2 md:py-2 py-1 text-xs md:text-sm font-semibold text-white">
+          {/* <div className="absolute md:left-4 left-1 md:top-4 md:bottom-auto bottom-4 flex items-center gap-2 rounded-full bg-green-600 md:px-4 px-2 md:py-2 py-1 text-xs md:text-sm font-semibold text-white">
             <FaLeaf size={16} />
             Fresh & Local
-          </div>
+          </div> */}
 
           {/* Icons */}
-          <div className="absolute right-4 top-4 flex gap-3">
+          <div className="absolute md:right-4 right-1 top-1 md:top-4 flex gap-3">
             <button
               onClick={(e) => {
                 e.stopPropagation();
                 AddToWishlist(product._id);
               }}
-              className="rounded-full bg-white p-3 shadow-lg hover:bg-green-50 active:scale-95"
+              className="rounded-full bg-black/20 p-2 md:p-3 shadow-lg hover:bg-green-50 active:scale-95"
             >
               {isWishlisted ? (
-                <FaHeart className="text-pink-500" size={22} />
+                <FaHeart className="text-pink-500 size-4 md:size-6" />
               ) : (
-                <CiHeart size={22} />
+                <CiHeart size={22} className="text-pink-500 size-4 md:size-6" />
               )}
             </button>
 
@@ -171,9 +177,9 @@ const ProductCard = ({ product }) => {
                 e.stopPropagation();
                 addToCart(product._id);
               }}
-              className="rounded-full bg-white p-3 shadow-lg hover:bg-green-50"
+              className="rounded-full bg-black/20 p-2 md:p-3 shadow-lg hover:bg-green-50"
             >
-              <GiShoppingCart size={22} />
+              <GiShoppingCart className="text-foreground size-4 md:size-6" />
             </button>
           </div>
         </div>
@@ -181,11 +187,11 @@ const ProductCard = ({ product }) => {
         {/* Content */}
         <div className="md:p-2 p-1">
           <div>
-            <h2 className="text-xl md:text-2xl font-bold">
+            <h2 className="text-sm md:text-xl font-bold">
               {product?.productName}
             </h2>
 
-            <p className="mt-1 text-gray-500 text-nowrap">
+            <p className="mt-1 text-xs md:text-xl text-gray-500 text-nowrap">
               {product?.description}
             </p>
           </div>
@@ -193,23 +199,23 @@ const ProductCard = ({ product }) => {
           {/* Rating */}
           <div className="flex items-center gap-2">
             <FaStar className="fill-yellow-400 text-yellow-400" size={18} />
-            <span className="font-semibold">4.7</span>
+            <span className="font-semibold text-sm md:text-md">4.7</span>
             <span className="text-gray-500 text-xs">(128)</span>
           </div>
 
           {/* Price */}
           <div className="flex items-center justify-between">
             <div>
-              <span className="text-xl md:text-2xl font-bold text-green-600">
+              <span className="text-sm md:text-xl font-bold text-green-600">
                 ₹{product?.sellPrice}
               </span>
-              <span className="md:text-xl text-gray-500">
+              <span className="text-sm md:text-xl text-gray-500">
                 {" "}
                 /{product?.unit}
               </span>
             </div>
 
-            <div className="space-y-1 text-right pb-2">
+            <div className="text-sm md:text-xlspace-y-1 text-right pb-2">
               <p className="text-gray-400 line-through">
                 ₹{product?.actualPrice}
               </p>
@@ -227,13 +233,13 @@ const ProductCard = ({ product }) => {
                 e.stopPropagation();
                 addToCart(product._id);
               }}
-              className="flex-1 rounded-xl bg-green-600 py-2 font-semibold text-white transition hover:bg-green-700"
+              className="text-xs md:text-xl flex-1 rounded-xl bg-green-600 py-1 md:py-2 font-semibold text-white transition hover:bg-green-700"
             >
               {cartIsPending ? "Adding..." : "Add To Cart"}
             </button>
 
-            <button className="rounded-xl border border-green-200 bg-green-50 p-2 text-green-600 hover:bg-green-100">
-              <FaLeaf size={22} />
+            <button className="rounded-xl border border-green-200 bg-green-50 p-1 text-green-600 hover:bg-green-100">
+              <FaLeaf className="size-3 md:size-5" />
             </button>
           </div>
         </div>

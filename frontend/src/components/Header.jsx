@@ -1,7 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Input } from "./ui/input";
-import { FaHeart, FaSearch } from "react-icons/fa";
+import { FaHeart } from "react-icons/fa";
 import { IoCart } from "react-icons/io5";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
@@ -98,30 +97,30 @@ const Header = () => {
 
   const linkClass = (path) => {
     return `relative inline-block before:content-[''] before:absolute before:left-0 before:bottom-0 
-    before:h-0.5 before:bg-gradient-to-r before:from-[#7de54d] before:to-[#085108] before:rounded-full 
+    before:h-0.5 before:bg-gradient-to-r before:from-[var(--brand-accent)] before:to-[var(--primary)] before:rounded-full 
     before:transition-all before:duration-300 transition-all duration-500
     ${
       pathname === path
-        ? "text-[#7de54d] scale-105 before:w-full"
-        : "text-white hover:before:w-full hover:scale-105 before:w-0"
+        ? "text-brand-accent scale-105 before:w-full"
+        : "text-header-foreground hover:before:w-full hover:scale-105 before:w-0"
     }`;
   };
   return (
     <header className="fixed left-0 top-0 z-50 w-full">
-      <section className="bg-[#085108] backdrop-blur-2xl py-1 md:py-3 px-2 flex items-center justify-between relative">
+      <section className="bg-header backdrop-blur-2xl py-1 md:py-3 px-2 flex items-center justify-between relative">
         {/* logo */}
         <div className="items-center gap-5">
           <Link
             href="/"
-            className=" text-2xl md:text-3xl font-bold tracking-wider font-serif text-white whitespace-nowrap"
+            className=" text-2xl md:text-3xl font-bold tracking-wider font-serif text-header-foreground whitespace-nowrap"
           >
             🌿Kisan
-            <span className="text-[#7de54d]">Bazar</span>
+            <span className="text-brand-accent">Bazar</span>
           </Link>
         </div>
         {/* nav-link */}
-        <ul className="items-center gap-3 hidden md:flex">
-          <li className="text-white font-medium text-xl relative">
+        <ul className="items-center gap-6 hidden md:flex">
+          <li className="text-white font-medium text- text-xl relative">
             <Link href="/" className={linkClass("/")}>
               Home
             </Link>
@@ -153,7 +152,7 @@ const Header = () => {
           </li>
         </ul>
         {/* search */}
-        <div className="hidden md:block">
+        {/* <div className="hidden md:block">
           <div className="hover:shadow-blue-500 hover:shadow-2xl relative hidden lg:block">
             <div className="relative">
               <Input
@@ -169,7 +168,7 @@ const Header = () => {
           <div className=" lg:hidden flex items-center justify-center w-10 h-10 backdrop-blur-2xl bg-[#1fac551e] rounded-full cursor-pointer hover:shadow-2xl hover:shadow-[#e9e9e9] active:scale-95">
             <FaSearch className=" text-white" />
           </div>
-        </div>
+        </div> */}
         {/* user & cart */}
         <div className="gap-5 hidden md:flex">
           <div className="relative">
@@ -192,8 +191,7 @@ const Header = () => {
             <div className="shrink-0">
               <Link
                 href={userData ? "/profile" : "/login"}
-                onClick={() => setIsOpenUser(!isOpenUser)}
-                className="group flex items-center gap-2 rounded-full px-2 py-1 text-white hover:shadow-2xl hover:shadow-black transition-all duration-300 active:scale-95 cursor-pointer pointer-events-auto touch-manipulation"
+                className={`group flex items-center gap-2 border rounded-full px-2 py-1 text-white hover:shadow-2xl hover:shadow-black transition-all duration-300 active:scale-95 cursor-pointer pointer-events-auto touch-manipulation ${pathname === "/profile" ? "shadow-2xl border-green-500 shadow-[#00000086] " : "border-transparent"}`}
               >
                 <span className="w-10 h-10 rounded-full bg-[#9bff9b47] overflow-hidden transition-transform duration-200 group-hover:scale-105">
                   <Image
@@ -213,7 +211,7 @@ const Header = () => {
         </div>
 
         <div
-          className={`fixed top-11 right-0 z-50 h-screen w-72 bg-[#085108]
+          className={`fixed top-11 right-0 z-50 h-screen w-72 bg-header
         transition-transform duration-300 ease
         ${isMenuOpen ? "translate-x-0" : "translate-x-full"}`}
         >
@@ -223,7 +221,7 @@ const Header = () => {
                 <ul className="space-y-4 pb-2 flex flex-col w-full">
                   <li
                     onClick={() => setIsMenuOpen(!isMenuOpen)}
-                    className="text-white font-medium text-xl relative"
+                    className="text-white font-medium text-[18px] relative"
                   >
                     <Link href="/" className={`${linkClass("/")} w-full`}>
                       Home
@@ -231,7 +229,7 @@ const Header = () => {
                   </li>
                   <li
                     onClick={() => setIsMenuOpen(!isMenuOpen)}
-                    className="text-white font-medium text-xl "
+                    className="text-white font-medium text-[18px] "
                   >
                     <Link
                       href="/blog"
@@ -242,7 +240,7 @@ const Header = () => {
                   </li>
                   <li
                     onClick={() => setIsMenuOpen(!isMenuOpen)}
-                    className="text-white font-medium text-xl before: "
+                    className="text-white font-medium text-[18px]"
                   >
                     <Link
                       href="/shopping"
@@ -253,7 +251,7 @@ const Header = () => {
                   </li>
                   <li
                     onClick={() => setIsMenuOpen(!isMenuOpen)}
-                    className="text-white font-medium text-xl"
+                    className="text-white font-medium text-[18px]"
                   >
                     <Link
                       href="/orders"
@@ -264,7 +262,7 @@ const Header = () => {
                   </li>
                   <li
                     onClick={() => setIsMenuOpen(!isMenuOpen)}
-                    className="text-white font-medium text-xl"
+                    className="text-white font-medium text-[18px]"
                   >
                     <Link
                       href="/chat"
@@ -275,7 +273,7 @@ const Header = () => {
                   </li>
                 </ul>
                 {/* search */}
-                <div className="">
+                {/* <div className="">
                   <div className="hover:shadow-blue-500 hover:shadow-2xl relative hidden lg:block">
                     <div className="relative">
                       <Input
@@ -291,7 +289,7 @@ const Header = () => {
                   <div className=" lg:hidden flex items-center justify-center w-10 h-10 backdrop-blur-2xl bg-[#1fac551e] rounded-full cursor-pointer hover:shadow-2xl hover:shadow-[#e9e9e9] active:scale-95">
                     <FaSearch className=" text-white" />
                   </div>
-                </div>
+                </div> */}
                 {/* user & cart */}
                 <div className="gap-5">
                   <div

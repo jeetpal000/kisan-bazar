@@ -55,7 +55,7 @@ export default function ChatHomePage() {
           <div className="flex h-full flex-col">
             <div className="flex items-center justify-between border-b px-5 py-4">
               <div>
-                <h1 className="text-lg font-semibold text-slate-900">Chats</h1>
+                <h1 className="text-lg font-semibold text-foreground">Chats</h1>
                 <p className="text-xs text-slate-500">Find a farmer or buyer</p>
               </div>
               <button
@@ -87,13 +87,13 @@ export default function ChatHomePage() {
                   key={user.id}
                   href={`/chat/${user.id}`}
                   onClick={() => setIsOpen(false)}
-                  className="flex items-center gap-3 rounded-lg p-3 hover:bg-green-50"
+                  className="flex items-center gap-3 rounded-lg p-3 hover:bg-[#94949452]"
                 >
                   <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-green-100 font-semibold text-green-800">
                     {user.farmername?.charAt(0).toUpperCase()}
                   </div>
                   <div className="min-w-0 flex-1">
-                    <p className="truncate font-medium text-slate-800">
+                    <p className="truncate font-medium text-foreground">
                       {user.farmername}
                     </p>
                     <p className="truncate text-xs text-slate-500">
@@ -110,7 +110,7 @@ export default function ChatHomePage() {
             </div>
           </div>
         </aside>
-        <section className="flex h-full w-full min-w-0 flex-col items-center justify-center bg-[linear-gradient(135deg,#f7fbf6_0%,#eef7ec_100%)] px-6 text-center">
+        <section className="flex h-full w-full min-w-0 flex-col items-center justify-center bg-[linear-gradient(135deg,#0f0f0f0_0%,#eef7ec_100%)] px-6 text-center">
           <div className="flex size-20 items-center justify-center rounded-full bg-green-700 text-white shadow-lg">
             <MessageCircle className="size-9" />
           </div>

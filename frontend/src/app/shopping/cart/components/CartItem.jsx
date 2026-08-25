@@ -10,8 +10,7 @@ const CartItem = ({ item }) => {
   const queryClient = useQueryClient();
   const product = item.productId;
 
-  const image =
-    product?.images?.[0] || product?.imageUrls?.[0] || "/placeholder.png";
+  const image = product?.imageUrls?.[0] || "/placeholder.png";
 
   const quantity = item.quantity;
 

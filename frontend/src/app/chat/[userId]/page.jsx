@@ -26,6 +26,7 @@ export default function ChatPage() {
   const [typing, setTyping] = useState(false);
   const [online, setOnline] = useState(false);
   const [lastSeen, setLastSeen] = useState(null);
+  const [activeUsers, setActiveUsers] = useState(0);
   const bottomRef = useRef(null);
   const typingTimeout = useRef(null);
   const acknowledgedMessageIds = useRef(new Set());
@@ -51,6 +52,7 @@ export default function ChatPage() {
     const handlePresence = ({ onlineUserIds, lastSeen: seen }) => {
       setOnline(onlineUserIds.includes(userId));
       setLastSeen(seen[userId] || null);
+      setActiveUsers(onlineUserIds.length);
     };
     const handleTyping = ({ userId: senderId, isTyping }) => {
       if (senderId === userId) setTyping(isTyping);
@@ -148,7 +150,6 @@ export default function ChatPage() {
     );
   };
 
-  const [activeUsers, setActiveUsers] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
   const [search, setSearch] = useState("");
   const [users, setUsers] = useState([]);
@@ -161,30 +162,6 @@ export default function ChatPage() {
     };
     loadRecentChats();
   }, [userId, messages.length]);
-
-  useEffect(() => {
-    const visitorId =
-      userId ||
-      sessionStorage.getItem("kisan-bazar-visitor-id") ||
-      crypto.randomUUID();
-
-    sessionStorage.setItem("kisan-bazar-visitor-id", visitorId);
-
-    const handleActiveUsers = (count) => {
-      setActiveUsers(count);
-    };
-
-    socket.on("active-users", handleActiveUsers);
-    socket.connect();
-
-    socket.emit("user:online", visitorId);
-
-    return () => {
-      socket.off("active-users", handleActiveUsers);
-
-      socket.disconnect();
-    };
-  }, [userId]);
 
   useEffect(() => {
     const loadUsers = async () => {
@@ -224,7 +201,7 @@ export default function ChatPage() {
           <div className="flex h-full flex-col">
             <div className="flex items-center justify-between border-b px-5 py-4">
               <div>
-                <h2 className="text-lg font-semibold text-slate-900">Chats</h2>
+                <h2 className="text-lg font-semibold text-foreground">Chats</h2>
                 <p className="text-xs text-slate-500">
                   {activeUsers} farmers online now
                 </p>
@@ -297,7 +274,7 @@ export default function ChatPage() {
           </div>
         </div>
         <section className="flex h-full w-full min-w-0 flex-col overflow-hidden bg-white">
-          <header className="z-[1] flex shrink-0 items-center gap-3 border-b bg-white px-5 py-4">
+          <header className="z-1 flex shrink-0 items-center gap-3 border-b bg-white px-5 py-4">
             <button
               type="button"
               onClick={() => setIsOpen(true)}
@@ -320,7 +297,7 @@ export default function ChatPage() {
               )}
             </div>
             <div>
-              <h1 className="font-semibold text-slate-900">
+              <h1 className="font-semibold text-foreground">
                 {otherUser.farmername}
               </h1>
               <p
@@ -330,7 +307,7 @@ export default function ChatPage() {
               </p>
             </div>
           </header>
-          <div className="flex-1 space-y-3 overflow-y-auto bg-slate-50 p-5">
+          <div className="flex-1 space-y-3 overflow-y-auto p-5">
             {messages.map((message) => (
               <div
                 key={message.id}

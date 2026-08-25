@@ -51,13 +51,23 @@ const BlogPageCard = ({ blog }) => {
             <video src={currentMediaUrl} className="w-full h-full" controls />
           </>
         ) : (
-          <div className="relative w-full aspect-9/16 overflow-hidden rounded-lg">
+          // <div className="relative w-full aspect-9/16 overflow-hidden rounded-lg">
+          //   <Image
+          //     src={currentMediaUrl}
+          //     alt={blog.blogName}
+          //     className="object-cover"
+          //     fill
+          //     unoptimized
+          //   />
+          // </div>
+
+          <div className="w-full h-72 flex items-center justify-center overflow-hidden">
             <Image
               src={currentMediaUrl}
               alt={blog.blogName}
-              className="object-cover"
-              fill
-              unoptimized
+              width={500}
+              height={500}
+              className="w-full h-full object-contain"
             />
           </div>
         )}
@@ -104,9 +114,13 @@ const BlogPageCard = ({ blog }) => {
           {blog.category}
         </h3>
         {/* title */}
-        <b className="font-bold text-xl mb-2 line-clamp-2">{blog.blogName}</b>
-        <p className="text-[#656565] line-clamp-2 mb-3">{blog.description}</p>
-        <p className="flex items-center gap-5 py-1 text-xs">
+        <b className="font-bold text-sm md:text-sm lg:text-xl mb-2 line-clamp-2">
+          {blog.blogName}
+        </b>
+        <p className="text-[#656565] text-xs sm:text-sm line-clamp-2 mb-3">
+          {blog.description}
+        </p>
+        <p className="text-xs  flex items-center flex-wrap gap-2 py-1 ">
           <span className="flex items-center gap-1">
             <FaRegCalendarAlt />{" "}
             {new Date(blog.createdAt).toLocaleDateString("en-US", {
@@ -125,7 +139,7 @@ const BlogPageCard = ({ blog }) => {
         </p>
         <Link
           href={`/blog/${blog._id}`}
-          className="self-end flex gap-2 items-center text-green-600 font-medium cursor-pointer hover:shadow-2xl hover:shadow-black px-2.5 py-1 rounded transition-all duration-300 active:scale-95 border border-[#9b9a9a47] w-fit mt-2"
+          className="self-end flex gap-2 items-center text-green-600 font-medium cursor-pointer hover:shadow-2xl hover:shadow-black px-2.5 py-1 rounded transition-all duration-300 active:scale-95 border border-[#9b9a9a47] w-fit mt-2 text-xs md:text-sm"
         >
           Read More{" "}
           <FaArrowRight className="transform transition-transform duration-300 group-hover:translate-x-2" />

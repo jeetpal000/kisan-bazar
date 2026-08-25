@@ -111,8 +111,8 @@ const Page = () => {
 
   return (
     <main className="mt-18">
-      <section className="bg-[#00800019] py-2 px-3 grid grid-cols-[1fr_3fr] gap-8">
-        <div className="max-w-360 flex flex-col gap-2">
+      <section className="grid gap-6 bg-[#00800019] px-3 py-4 sm:px-6 lg:grid-cols-[1fr_3fr] lg:gap-8">
+        <div className="flex max-w-360 flex-col gap-2">
           <h1 className="text-2xl font-bold text-[green] rounded">
             Become a Seller
           </h1>
@@ -142,7 +142,7 @@ const Page = () => {
             Apply Now
           </Link>
         </div>
-        <div className="flex items-start justify-between gap-4 px-2 pt-2 bg-[url('/assets/village2.png')] bg-cover bg-center border border-[#80808025] rounded-md shadow-2xs">
+        <div className="grid grid-cols-2 items-start gap-4 rounded-md border border-[#80808025] bg-[url('/assets/village2.png')] bg-cover bg-center px-2 py-3 shadow-2xs sm:grid-cols-4">
           <p className="flex flex-col gap-1 items-center">
             <FaUsers className="text-green-500 h-8 w-8" />
             <span className="text-green-500 text-xl font-bold">10K+</span>
@@ -169,7 +169,7 @@ const Page = () => {
         <h1 className="text-2xl font-bold text-center py-6">
           Why Become a Seller?
         </h1>
-        <div className="grid grid-cols-4 p-2 gap-3">
+        <div className="grid gap-3 p-2 sm:grid-cols-2 lg:grid-cols-4">
           <div className="broder border-[#80808014] shadow-md shadow-[#00800062] flex items-center gap-2 py-2 px-4 rounded-md ">
             <FaPeopleRoof className="h-10 w-10 text-green-500 bg-[#00800013] rounded-full p-1 shrink-0 " />
             <p className="flex flex-col gap-1 ">
@@ -212,7 +212,10 @@ const Page = () => {
         </div>
       </section>
       {/* Seller information */}
-      <section id="apply" className="grid grid-cols-[3fr_1fr] gap-2 py-4 px-2 ">
+      <section
+        id="apply"
+        className="grid gap-2 px-2 py-4 lg:grid-cols-[3fr_1fr]"
+      >
         <div className="border bg-[#00800019] border-[#80808027] rounded-md px-2 py-4">
           <div className="flex gap-2">
             <TbListDetails className="h-8 w-8 text-green-500" />
@@ -222,7 +225,7 @@ const Page = () => {
             </p>
           </div>
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="grid grid-cols-3 gap-2 py-4">
+            <div className="grid gap-2 py-4 sm:grid-cols-2 lg:grid-cols-3">
               <Field>
                 <FieldLabel htmlFor="farmername" className="font-bold">
                   Farmer Name
@@ -257,7 +260,7 @@ const Page = () => {
                 />
               </Field>
             </div>
-            <div className="grid grid-cols-3 gap-2 py-4">
+            <div className="grid gap-2 py-4 sm:grid-cols-2 lg:grid-cols-3">
               <Field>
                 <FieldLabel htmlFor="shopname" className="font-bold">
                   Shop/Farm Name
@@ -307,7 +310,7 @@ const Page = () => {
                 )}
               </Field>
             </div>
-            <div className="grid grid-cols-3 gap-2 py-4">
+            <div className="grid gap-2 py-4 sm:grid-cols-2 lg:grid-cols-3">
               <Field>
                 <FieldLabel htmlFor="state" className="font-bold">
                   State
@@ -380,7 +383,7 @@ const Page = () => {
               </Field>
             </div>
 
-            <div className="grid grid-cols-2 grid-rows-2 gap-2">
+            <div className="grid gap-2 sm:grid-cols-2">
               <Field>
                 <FieldLabel htmlFor="bankAccountName" className="font-bold">
                   Bank Account Name
