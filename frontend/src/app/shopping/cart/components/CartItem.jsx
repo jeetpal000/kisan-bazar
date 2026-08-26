@@ -17,7 +17,6 @@ const CartItem = ({ item }) => {
   const price = product?.sellPrice ?? 0;
 
   const total = quantity * price;
-  console.log(item);
 
   const { mutate: addToCart, isPending: cartIsPending } = useMutation({
     mutationFn: async (productId) => {

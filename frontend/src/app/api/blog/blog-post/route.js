@@ -77,7 +77,6 @@ export async function POST(req) {
           const buffer = Buffer.from(bytes);
           const base64 = `data:${file.type};base64,${buffer.toString("base64")}`;
 
-          console.log(`Uploading media ${index + 1} (${(file.size / (1024 * 1024)).toFixed(2)}MB)...`);
 
           const uploadResult = await cloudinary.uploader.upload(base64, {
             folder: "kisan-bazar/blogs",
@@ -85,7 +84,6 @@ export async function POST(req) {
             timeout: 120000, // 2 minutes for individual upload
           });
 
-          console.log(`Media ${index + 1} uploaded successfully`);
 
           return {
             url: uploadResult.secure_url,

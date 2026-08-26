@@ -59,21 +59,18 @@ io.on("connection", (socket) => {
   socket.on("user:online", (userId) => {
     if (!userId) return;
 
-    // Socket ke andar userId save kar do
+  
     socket.userId = userId;
 
-    // User ke liye Set create karo
     if (!activeUsers.has(userId)) {
       activeUsers.set(userId, new Set());
     }
 
-    // Is tab/socket ko add karo
     activeUsers.get(userId).add(socket.id);
 
     console.log("User online:", userId);
     console.log("Active users:", activeUsers.size);
 
-    // Sab connected users ko new count bhejo
     io.emit("active-users", activeUsers.size);
     emitPresence();
   });
@@ -183,13 +180,10 @@ io.on("connection", (socket) => {
       }
     }
 
-    // Current tab/socket remove
+
     userSockets.delete(socket.id);
 
-    /*
-      Agar user ke koi socket remaining nahi hain,
-      iska matlab user completely offline hai.
-    */
+
     if (userSockets.size === 0) {
       activeUsers.delete(userId);
       lastSeen.set(userId, new Date().toISOString());
@@ -199,7 +193,7 @@ io.on("connection", (socket) => {
 
     console.log("Active users:", activeUsers.size);
 
-    // Updated count sabko bhejo
+
     io.emit("active-users", activeUsers.size);
     emitPresence();
   });

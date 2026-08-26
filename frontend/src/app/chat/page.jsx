@@ -2,7 +2,13 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { ArrowLeft, ChevronLeft, MessageCircle, Search } from "lucide-react";
+import {
+  ArrowLeft,
+  ChevronLeft,
+  MessageCircle,
+  PanelLeftOpen,
+  Search,
+} from "lucide-react";
 import { Input } from "@/components/ui/input";
 
 export default function ChatHomePage() {
@@ -43,18 +49,29 @@ export default function ChatHomePage() {
       <div className="relative flex h-[calc(100vh-10rem)] overflow-hidden rounded-xl border bg-white shadow-sm">
         <button
           type="button"
-          onClick={() => setIsOpen(true)}
+          onClick={() => setIsOpen(!isOpen)}
           aria-label="Open chats"
           className="absolute left-3 top-3 z-20 flex size-10 items-center justify-center rounded-full bg-green-700 text-white shadow-lg md:hidden"
         >
-          <MessageCircle className="size-5" />
+          <PanelLeftOpen className="size-5" />
         </button>
+        {!isOpen && (
+          <b
+            onClick={() => setIsOpen(true)}
+            className="absolute left-14 text-sm md:hidden bg-black/20 backdrop-blur-2xl px-2 py-1 top-4 rounded-full "
+          >
+            Find user & Chat them
+          </b>
+        )}
         <aside
           className={`absolute inset-y-0 left-0 z-10 w-[min(86vw,21rem)] border-r bg-white transition-transform duration-300 md:relative md:z-0 md:block md:w-80 md:translate-x-0 ${isOpen ? "translate-x-0" : "-translate-x-full"}`}
         >
           <div className="flex h-full flex-col">
-            <div className="flex items-center justify-between border-b px-5 py-4">
-              <div>
+            <div
+              onClick={() => setIsOpen(false)}
+              className="flex items-center justify-between border-b px-5 py-4"
+            >
+              <div className="pl-10">
                 <h1 className="text-lg font-semibold text-foreground">Chats</h1>
                 <p className="text-xs text-slate-500">Find a farmer or buyer</p>
               </div>

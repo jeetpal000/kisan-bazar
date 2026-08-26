@@ -12,6 +12,7 @@ import {
   PhoneOff,
   Search,
   Send,
+  Menu,
 } from "lucide-react";
 import { useParams } from "next/navigation";
 import { socket } from "@/lib/socket";
@@ -461,19 +462,22 @@ export default function ChatPage() {
       <div className="relative flex h-[calc(100vh-10rem)] overflow-hidden rounded-xl border bg-white shadow-sm">
         <button
           type="button"
-          onClick={() => setIsOpen(true)}
+          onClick={() => setIsOpen(!isOpen)}
           aria-label="Open chats"
-          className="absolute left-3 top-3 z-20 flex size-10 items-center justify-center rounded-full bg-green-700 text-white shadow-lg md:hidden"
+          className="absolute left-1 top-4 z-20 flex size-10 items-center justify-center rounded-full bg-green-700 text-white shadow-lg md:hidden"
         >
-          <MessageCircle className="size-5" />
+          <Menu className="size-5" />
         </button>
         <div
           className={`absolute inset-y-0 left-0 z-10 w-[min(86vw,21rem)] border-r bg-white transition-transform duration-300 md:relative md:z-0 md:block md:w-80 md:translate-x-0 ${isOpen ? "translate-x-0" : "-translate-x-full"}`}
           onClick={(event) => event.stopPropagation()}
         >
           <div className="flex h-full flex-col">
-            <div className="flex items-center justify-between border-b px-5 py-4">
-              <div>
+            <div
+              onClick={() => setIsOpen(false)}
+              className="flex items-center justify-between border-b px-5 py-4"
+            >
+              <div className="pl-10">
                 <h2 className="text-lg font-semibold text-foreground">Chats</h2>
                 <p className="text-xs text-slate-500">
                   {activeUsers} farmers online now
