@@ -3,14 +3,12 @@
 import { useEffect, useState } from "react";
 import { socket } from "@/lib/socket";
 
-export default function ActiveUsers({ userId }) {
+export default function ActiveUsers() {
   const [activeUsers, setActiveUsers] = useState(0);
 
   useEffect(() => {
     const visitorId =
-      userId ||
-      sessionStorage.getItem("kisan-bazar-visitor-id") ||
-      crypto.randomUUID();
+      sessionStorage.getItem("kisan-bazar-visitor-id") || crypto.randomUUID();
 
     sessionStorage.setItem("kisan-bazar-visitor-id", visitorId);
 
@@ -28,7 +26,7 @@ export default function ActiveUsers({ userId }) {
 
       socket.disconnect();
     };
-  }, [userId]);
+  }, []);
 
   return (
     <div className="flex items-center gap-2" aria-label="Active users">

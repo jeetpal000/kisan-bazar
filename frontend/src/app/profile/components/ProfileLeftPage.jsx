@@ -40,8 +40,6 @@ const ProfileLeftPage = ({ userData, onProfileUpdated }) => {
   const preview =
     selectedPreview || userData?.profileImage || "/assets/user.png";
 
-  console.log(preview);
-
   const handleFileChange = (e) => {
     const selectedFile = e.target.files?.[0];
     if (!selectedFile) return;

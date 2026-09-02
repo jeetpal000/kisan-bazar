@@ -11,7 +11,6 @@ const Page = () => {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  console.log(product);
 
   useEffect(() => {
     const fetchProduct = async () => {

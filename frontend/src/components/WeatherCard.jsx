@@ -221,8 +221,6 @@ const WeatherCard = () => {
         },
 
         async (error) => {
-          console.log("Location denied:", error);
-
           await getLocationByIP();
         },
 

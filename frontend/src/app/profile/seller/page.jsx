@@ -406,7 +406,7 @@ const Page = () => {
                 </FieldLabel>
                 <Input
                   id="IfscCode"
-                  type="tel"
+                  type="text"
                   placeholder=""
                   {...register("ifscCode")}
                 />

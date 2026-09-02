@@ -31,7 +31,6 @@ const Page = () => {
   } = useForm({
     resolver: zodResolver(updateProfileSchema),
   });
-  console.log("validation errror", errors);
 
   useEffect(() => {
     register("state");
@@ -320,7 +319,7 @@ const Page = () => {
                 </FieldLabel>
                 <Input
                   id="IfscCode"
-                  type="tel"
+                  type="text"
                   placeholder=""
                   {...register("ifscCode")}
                 />

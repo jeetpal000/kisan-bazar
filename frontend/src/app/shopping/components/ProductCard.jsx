@@ -18,6 +18,7 @@ const ProductCard = ({ product }) => {
   const queryClient = useQueryClient();
   const [currentIndex, setCurrentIndex] = useState(0);
   const { wishlist } = useWishlistStore();
+  console.log(product._id);
 
   const handlePrevious = (e) => {
     e.stopPropagation();
@@ -101,7 +102,7 @@ const ProductCard = ({ product }) => {
   });
 
   const isWishlisted = wishlist.some(
-    (item) => item.productId._id === product._id,
+    (item) => item?.productId?._id === product?._id,
   );
 
   return (
@@ -161,7 +162,7 @@ const ProductCard = ({ product }) => {
             <button
               onClick={(e) => {
                 e.stopPropagation();
-                AddToWishlist(product._id);
+                AddToWishlist(product?._id);
               }}
               className="rounded-full bg-black/20 p-2 md:p-3 shadow-lg hover:bg-green-50 active:scale-95"
             >

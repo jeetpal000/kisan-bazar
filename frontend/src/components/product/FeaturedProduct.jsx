@@ -8,6 +8,7 @@ import ProductCardSkeleton from "@/app/shopping/components/ProductCardSkelton";
 const FeaturedProduct = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  console.log(products);
 
   useEffect(() => {
     try {

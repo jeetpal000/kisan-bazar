@@ -63,7 +63,9 @@ export const sellerProfileSchema = z.object({
     .trim(),
   ifscCode: z
     .string()
-    .regex(/^[A-Z]{4}0[A-Z0-9]{6}$/, "Invalid IFSC"),
+    .regex(/^[A-Z]{4}/, "IFSC code should be capital letter")
+    .regex(/^[A-Z]{4}0/, "5th character should be zero")
+    .regex(/^[A-Z]{4}0[A-Z0-9]{6}/, "Last 6 chacterters must be alphanumeric"),
   shopnumber: z
     .string()
     .regex(

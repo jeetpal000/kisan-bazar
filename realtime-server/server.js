@@ -44,6 +44,7 @@ const emitPresence = () => {
     onlineUserIds: getOnlineUserIds(),
     lastSeen: Object.fromEntries(lastSeen),
   });
+    console.log({onlineUserIds: getOnlineUserIds(), lastseen: Object.fromEntries(lastSeen)});
 };
 
 const emitToUser = (userId, event, payload) => {
@@ -55,6 +56,7 @@ const emitToUser = (userId, event, payload) => {
 
 io.on("connection", (socket) => {
   console.log("Socket connected:", socket.id);
+
 
   socket.on("user:online", (userId) => {
     if (!userId) return;
@@ -70,6 +72,7 @@ io.on("connection", (socket) => {
 
     console.log("User online:", userId);
     console.log("Active users:", activeUsers.size);
+      console.log(activeUsers)
 
     io.emit("active-users", activeUsers.size);
     emitPresence();

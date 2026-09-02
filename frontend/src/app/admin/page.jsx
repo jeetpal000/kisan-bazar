@@ -34,7 +34,6 @@ const Page = () => {
         const res = await fetch("/api/usersdata", { cache: "no-store" });
         if (!res.ok) return;
         const data = await res.json();
-        console.log(data);
         setUserData(data);
       } catch (error) {
         console.error("Failed to load user data", error);
