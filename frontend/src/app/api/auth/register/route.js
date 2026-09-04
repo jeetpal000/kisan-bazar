@@ -25,13 +25,13 @@ export async function POST(req) {
       })
     }
 
-    const hashedPassword = await argon2.hash(password);
+    // const hashedPassword = await argon2.hash(password);
 
     const newUser = await UserTable.create({
       farmername,
       email,
       phone,
-      password: hashedPassword
+      password: hashedPassword,
     });
 
     await createSessionSetCookies({ id: newUser._id, name: newUser.farmername, email: newUser.email, phone: newUser.phone, role: newUser.role })

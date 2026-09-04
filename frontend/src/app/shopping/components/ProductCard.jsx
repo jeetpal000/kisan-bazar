@@ -178,9 +178,9 @@ const ProductCard = ({ product }) => {
                 e.stopPropagation();
                 addToCart(product._id);
               }}
-              className="rounded-full bg-black/20 p-2 md:p-3 shadow-lg hover:bg-green-50"
+              className="rounded-full bg-black/20 p-2 md:p-3 shadow-lg hover:bg-green-50 group"
             >
-              <GiShoppingCart className="text-foreground size-4 md:size-6" />
+              <GiShoppingCart className="text-foreground size-4 md:size-6 group-hover:text-black" />
             </button>
           </div>
         </div>
@@ -188,11 +188,11 @@ const ProductCard = ({ product }) => {
         {/* Content */}
         <div className="md:p-2 p-1">
           <div>
-            <h2 className="text-sm md:text-xl font-bold">
+            <h2 className="text-sm md:text-xl font-bold truncate">
               {product?.productName}
             </h2>
 
-            <p className="mt-1 text-xs md:text-xl text-gray-500 text-nowrap">
+            <p className="mt-1 text-xs sm:text-sm text-gray-500 text-nowrap truncate">
               {product?.description}
             </p>
           </div>
@@ -207,10 +207,10 @@ const ProductCard = ({ product }) => {
           {/* Price */}
           <div className="flex items-center justify-between">
             <div>
-              <span className="text-sm md:text-xl font-bold text-green-600">
+              <span className="text-xs md:text-sm font-bold text-green-600">
                 ₹{product?.sellPrice}
               </span>
-              <span className="text-sm md:text-xl text-gray-500">
+              <span className="text-xs md:text-sm text-gray-500">
                 {" "}
                 /{product?.unit}
               </span>
@@ -234,7 +234,7 @@ const ProductCard = ({ product }) => {
                 e.stopPropagation();
                 addToCart(product._id);
               }}
-              className="text-xs md:text-xl flex-1 rounded-xl bg-green-600 py-1 md:py-2 font-semibold text-white transition hover:bg-green-700"
+              className="text-xs md:text-sm flex-1 rounded-xl bg-green-600 py-1 md:py-2 font-semibold text-white transition hover:bg-green-700"
             >
               {cartIsPending ? "Adding..." : "Add To Cart"}
             </button>
