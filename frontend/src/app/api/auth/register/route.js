@@ -25,7 +25,7 @@ export async function POST(req) {
       })
     }
 
-    // const hashedPassword = await argon2.hash(password);
+    const hashedPassword = await argon2.hash(password);
 
     const newUser = await UserTable.create({
       farmername,
