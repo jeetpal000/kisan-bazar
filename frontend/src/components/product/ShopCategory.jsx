@@ -12,11 +12,11 @@ const ShopCategory = () => {
   return (
     <section className="my-7 mx-auto ">
       <div className="relative">
-        <div className="w-1/6 sm:w-1/5 md:w-1/3 h-1 bg-[#79b061ab] absolute top-1/2 -translate-y-1/2 rounded-md" />
-        <h1 className="text-center font-bold text-xl md:text-2xl lg:text-3xl">
+        <div className="w-1/6 sm:w-1/5 md:w-1/3 h-px bg-[#79b061ab] absolute top-1/2 -translate-y-1/2 rounded-md" />
+        <h1 className="text-center font-bold text-sm sm:text-xl md:text-2xl lg:text-3xl">
           Shop by Category
         </h1>
-        <div className="w-1/5 sm:w-1/4 md:w-1/3 h-1 bg-[#79b061ab] absolute top-1/2 -translate-y-1/2 right-0 rounded-md" />
+        <div className="w-1/5 sm:w-1/4 md:w-1/3 h-px bg-[#79b061ab] absolute top-1/2 -translate-y-1/2 right-0 rounded-md" />
       </div>
 
       <div className="flex items-center justify-around gap-2 mt-5">

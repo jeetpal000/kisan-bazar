@@ -248,7 +248,7 @@ const WeatherCard = () => {
   // --------------------------------------------------
 
   return (
-    <div className="bg-[#026d04b4] backdrop-blur-2xl rounded-md p-2 text-white">
+    <div className="bg-[#026d04b4] backdrop-blur-2xl max-w-3xl mx-auto rounded-md p-2 text-white">
       {/* SEARCH + REFRESH */}
 
       <div className="flex items-center gap-2 mx-auto w-full md:w-1/2">
@@ -344,8 +344,8 @@ const WeatherCard = () => {
 
         {/* WEATHER DETAILS */}
 
-        <div className="text-sm md:text-base col-span-1 pl-2 pt-2 space-y-2 flex items-center justify-around md:flex-col">
-          <div className="space-y-2 flex flex-col items-center justify-center">
+        <div className="text-sm md:text-base col-span-1 pl-2 pt-1 space-y-1 flex items-center justify-around md:flex-col">
+          <div className="space-y-1 flex flex-col md:flex-row w-full items-center justify-around ">
             <p>💧 Humidity</p>
 
             <p>
@@ -354,7 +354,7 @@ const WeatherCard = () => {
             </p>
           </div>
 
-          <div className="space-y-2 flex flex-col items-center justify-center">
+          <div className="space-y-2 flex flex-col md:flex-row w-full items-center justify-around border-l md:border-0">
             <p>☔ Rainfall</p>
 
             <p>
@@ -363,7 +363,7 @@ const WeatherCard = () => {
             </p>
           </div>
 
-          <div className="space-y-2 flex flex-col items-center justify-center">
+          <div className="space-y-2 flex flex-col md:flex-row w-full items-center justify-around border-l md:border-0">
             <p>💨 Wind</p>
 
             <p>
@@ -372,7 +372,7 @@ const WeatherCard = () => {
             </p>
           </div>
 
-          <div className="space-y-2 flex flex-col items-center justify-center">
+          <div className="space-y-2 flex flex-col md:flex-row w-full items-center justify-around border-l md:border-0  ">
             <p>🔆 UV Index</p>
 
             <p>
@@ -384,7 +384,7 @@ const WeatherCard = () => {
 
         {/* 7 DAY FORECAST */}
 
-        <div className="col-span-1 md:col-span-2 pt-2 overflow-hidden">
+        <div className="col-span-1 md:col-span-2  overflow-hidden">
           <div className="border-b p-2 flex justify-between">
             <p>7 Day Forecast</p>
           </div>

@@ -24,21 +24,23 @@ const LatestBlog = () => {
   return (
     <section className="my-10 mx-auto">
       <div className="relative mb-5">
-        <div className="w-1/3 h-1 absolute bg-[#79b061ab] top-1/2 -translate-y-1/2 rounded-md right-10 md:left-0" />
-        <h1 className="md:text-center font-bold text-xl md:text-2xl lg:text-3xl">
+        <div className="w-1/3 h-px absolute bg-[#79b061ab] top-1/2 -translate-y-1/2 rounded-md right-10 md:left-0" />
+        <h1 className="md:text-center font-bold text-sm sm:text-xl md:text-2xl lg:text-3xl">
           Latest Blog
         </h1>
-        <div className="w-1/5 sm:w-1/4 md:w-1/3 h-1 absolute bg-[#79b061ab] top-1/2 -translate-y-1/2 right-0 rounded-md" />
+        <div className="w-1/5 sm:w-1/4 md:w-1/3 h-px absolute bg-[#79b061ab] top-1/2 -translate-y-1/2 right-0 rounded-md" />
         <Link
           href="/blog"
-          className="absolute top-1/2 -translate-y-1/2 -right-2 rounded-none rounded-tr-full rounded-bl-full px-4 text-[#3eba0a] bg-[#dae1d0] backdrop-blur-2xl active:translate-y-0.5 py-1 text-sm md:text-xl"
+          className="absolute top-1/2 -translate-y-1/2 -right-2 rounded-none rounded-tr-full rounded-bl-full px-4 text-[#3eba0a] bg-[#dae1d0] backdrop-blur-2xl hover:bg-[#c8d1bc] text-sm md:text-xl"
         >
           View All
         </Link>
       </div>
 
       {blogs.length === 0 && (
-        <p>No blogs available🫠 {"/n"} Please upload blogs😍...</p>
+        <p className="text-xs">
+          No blogs available🫠 <br /> Please upload blogs😍...
+        </p>
       )}
 
       {loading ? (

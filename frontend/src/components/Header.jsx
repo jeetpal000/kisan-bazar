@@ -114,8 +114,8 @@ const Header = () => {
             href="/"
             className=" text-2xl md:text-3xl font-bold tracking-wider font-serif text-header-foreground whitespace-nowrap"
           >
-            🌿Kisan
-            <span className="text-brand-accent">Bazar</span>
+            🌿Farmer
+            <span className="text-brand-accent">Hub</span>
           </Link>
         </div>
         {/* nav-link */}

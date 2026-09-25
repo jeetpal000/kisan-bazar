@@ -3,6 +3,7 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { FaArrowRight, FaPlay } from "react-icons/fa";
 import ActiveUsers from "@/components/ActiveUsers";
+import { Play } from "lucide-react";
 
 const Landingage = () => {
   const images = ["/assets/landingpage1.jpg", "/assets/landingpage2.jpg"];
@@ -50,7 +51,7 @@ const Landingage = () => {
                 Direct from Farmers
               </li>
             </ul>
-            <p className="mt-8 text-xs md:text-md  font-medium text-[#060810f1]">
+            <p className="mt-8 text-xs md:text-md text-white font-medium  text-shadow-black">
               Support local farmers and get the highest quality <br /> product
               delivered fresh to your doorstep.
             </p>
@@ -62,18 +63,16 @@ const Landingage = () => {
                 Shop Now{" "}
                 <FaArrowRight className=" transform transition-transform duration-300 group-hover:translate-x-2" />
               </Link>
-              <button className="flex gap-2 items-center border border-gray-600 bg-black/40 text-[#029102] font-bold cursor-pointer hover:shadow-2xl hover:shadow-black px-3 py-2 text-xs  rounded-2xl active:scale-95 transition-all duration-300">
-                <div className="bg-[white] w-6 h-6 rounded-full flex items-center justyify-center">
-                  <FaPlay className="ml-1" />
-                </div>
+              <button className="flex gap-2 items-center border border-gray-600 bg-black/40 text-[#07d107] font-bold cursor-pointer hover:shadow-2xl hover:shadow-black px-3 py-1  rounded-2xl active:scale-95 transition-all duration-300">
+                <Play size={17} />
                 Watch Video
               </button>
             </div>
           </div>
-          <div className="absolute top-1/2 -translate-y-1/2 inset-0 rounded-3xl bg-[#4747476a] md:bg-[#ffffffab] w-full md:w-1/3 h-1/2 flex items-center justify-center blur-3xl " />
+          <div className="absolute top-1/2 -translate-y-1/2 inset-0 rounded-3xl bg-black/30 md:bg-[#ffffffab] w-full md:w-1/3 h-1/2 flex items-center justify-center blur-2xl " />
         </div>
       ))}
-      <div className="absolute bottom-8 right-4 z-30 w-fit rounded-full bg-white/55 px-4 py-2 text-[#085108] shadow-lg backdrop-blur-sm lg:left-10">
+      <div className="absolute bottom-2 right-2 z-30 w-fit rounded-full bg-white/15 px-2 sm:px-4 sm:py-2 py-1 text-[#085108] shadow-lg backdrop-blur-sm lg:left-10">
         <ActiveUsers />
       </div>
     </div>
