@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { socket } from "@/lib/socket";
+import { User } from "lucide-react";
 
 export default function ActiveUsers() {
   const [activeUsers, setActiveUsers] = useState(0);
@@ -31,7 +32,10 @@ export default function ActiveUsers() {
   return (
     <div className="flex items-center gap-2" aria-label="Active users">
       <span className="h-2.5 w-2.5 rounded-full bg-green-500 animate-pulse" />
-      <span className="text-sm">{activeUsers} farmers online</span>
+      <span className="text-sm flex items-center justify-center gap-1">
+        <User size={15} />
+        {activeUsers}{" "}
+      </span>
     </div>
   );
 }

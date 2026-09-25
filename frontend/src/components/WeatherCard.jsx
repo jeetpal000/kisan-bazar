@@ -265,7 +265,7 @@ const WeatherCard = () => {
                 searchLocation();
               }
             }}
-            className="pr-16"
+            className="pr-16 text-sm md:text-sm"
           />
 
           {/* Clear + Search buttons */}

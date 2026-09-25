@@ -14,7 +14,7 @@ const HomePage = () => {
     <main className="">
       {/* <Header /> */}
       <LandingPage />
-      <div className="max-w-360 mx-auto px-4 lg:px-10">
+      <div className="max-w-360 mx-auto px-1 sm:px-4 lg:px-10">
         <WeatherCard />
         <ShopCategory />
         <FeaturedProduct />
