@@ -106,7 +106,7 @@ const ProductCard = ({ product }) => {
   );
 
   return (
-    <section className="my-5 mx-auto lg:px-4 px-0">
+    <section className="my-5 mx-auto lg:px-4 px-0 overflow-hidden">
       {/* Product Card Grid */}
 
       <div
