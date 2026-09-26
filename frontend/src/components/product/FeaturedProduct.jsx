@@ -38,16 +38,14 @@ const FeaturedProduct = () => {
         </Link>
       </div>
 
-      {products.length === 0 && (
-        <p className="text-xs">No products available🫠</p>
-      )}
-
       {loading ? (
         <ProductCardSkeleton />
       ) : (
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 md:grid-cols-4 lg:grid-cols-5">
+        <div className="space-y-4 grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-2">
           {products.map((product) => (
-            <ProductCard key={product._id} product={product} />
+            <div key={product._id}>
+              <ProductCard key={product._id} product={product} />
+            </div>
           ))}
         </div>
       )}

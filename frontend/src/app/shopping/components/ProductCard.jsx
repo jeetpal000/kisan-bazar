@@ -106,7 +106,7 @@ const ProductCard = ({ product }) => {
   );
 
   return (
-    <section className="my-5 mx-auto lg:px-4 px-0 overflow-hidden">
+    <section className="my-5 mx-auto lg:px-4 px-0">
       {/* Product Card Grid */}
 
       <div
@@ -186,13 +186,13 @@ const ProductCard = ({ product }) => {
         </div>
 
         {/* Content */}
-        <div className="md:p-2 p-1">
+        <div className="md:p-2 p-1 ">
           <div>
             <h2 className="text-sm md:text-xl font-bold truncate">
               {product?.productName}
             </h2>
 
-            <p className="mt-1 text-xs sm:text-sm text-gray-500 text-nowrap truncate">
+            <p className="mt-1 text-xs sm:text-sm text-gray-500  truncate">
               {product?.description}
             </p>
           </div>

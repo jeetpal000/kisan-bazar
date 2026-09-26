@@ -37,12 +37,6 @@ const LatestBlog = () => {
         </Link>
       </div>
 
-      {blogs.length === 0 && (
-        <p className="text-xs">
-          No blogs available🫠 <br /> Please upload blogs😍...
-        </p>
-      )}
-
       {loading ? (
         <ProductCardSkeleton />
       ) : (
